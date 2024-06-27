@@ -1,0 +1,1 @@
+gunicorn 'crm_app.wsgi'
