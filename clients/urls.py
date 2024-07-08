@@ -10,4 +10,5 @@ router.register('document-data', DocumentView,  basename='user-login')
 urlpatterns = [
     path('', include(router.urls)),
     path('clients/', ClientsAPIView.as_view()),
+    path('share-clients/', ShareClientsAPIView.as_view()),
 ]

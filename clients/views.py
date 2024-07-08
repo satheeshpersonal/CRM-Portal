@@ -145,3 +145,25 @@ class ClientsAPIView(APIView):
         }
         
         return Response({"status" : "success", "data": output_data, "error": {"error_message":"success","error_code":"success"}, "extra_data" : extra_data},status=200)
+
+
+class ShareClientsAPIView(APIView):
+    authentication_classes = [TokenAuthentication, SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        output_data = []
+        print(request.user.id)
+        # request.data
+        client_ids=request.data.get("client_ids", [])
+        user_ids=request.data.get("user_ids", [])
+
+        
+        for user_id in user_ids:
+            for client_id in client_ids:
+                print(user_id, " - ", client_id, " - ", request.user.id)
+                ClientAccess.objects.get_or_create(user_id = user_id, clients_id = client_id, defaults = {'shared_user_id':request.user.id})
+        
+        extra_data = {}
+        
+        return Response({"status" : "success", "data": output_data, "error": {"error_message":"Client shared success","error_code":"success"}, "extra_data" : extra_data},status=200)
